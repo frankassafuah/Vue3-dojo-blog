@@ -15,12 +15,13 @@
     <div v-for="firstName in matchingNames" :key="firstName">
       {{ firstName }}
     </div>
+    <button @click="handleStop">Stop watch</button>
   </div>
 </template>
 
 <script>
 import { ref, reactive } from "@vue/reactivity";
-import { computed } from "@vue/runtime-core";
+import { computed, watch, watchEffect } from "@vue/runtime-core";
 export default {
   name: "HomeView",
   setup() {
@@ -60,6 +61,20 @@ export default {
       ninjaTwo.age = 45;
     };
 
+    const handleStop = () => {
+      stopWatch();
+      stopEffect();
+    };
+
+    //watch, watchEffect and stopWatch/stopEffect
+    const stopWatch = watch(search, () => {
+      console.log("watch function ran");
+    });
+
+    const stopEffect = watchEffect(() => {
+      console.log("watchEffect ran", search.value); //it runs any its dependencies(search.value) changes
+    });
+
     //register
     return {
       name,
@@ -70,7 +85,10 @@ export default {
       updateNinjaTwo,
       firstNames,
       search,
-      matchingNames
+      matchingNames,
+      stopWatch,
+      stopEffect,
+      handleStop
     };
   },
 };
