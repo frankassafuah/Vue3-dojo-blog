@@ -17,23 +17,24 @@
     </div>
     <button @click="handleStop">Stop watch</button>
   </div>
+  <br />
+  <h2>Props</h2>
+  <PostList :posts="posts" />
 </template>
 
 <script>
+import PostList from "../components/PostList.vue";
 import { ref, reactive } from "@vue/reactivity";
 import { computed, watch, watchEffect } from "@vue/runtime-core";
+
 export default {
   name: "HomeView",
+  components: { PostList },
   setup() {
     //refs
     const p = ref(null);
     const name = ref("Frank");
     const age = ref(15);
-
-    //reactive
-    const ninjaTwo = reactive({ name: "luigi", age: 35 }); //we can't use primitive values with reactive
-
-    //computed
     const search = ref("");
     const firstNames = ref([
       "mario",
@@ -44,7 +45,23 @@ export default {
       "koopa",
       "peach",
     ]);
+    const posts = ref([
+      {
+        title: "Welcome to blog",
+        body: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Nam omnis, necessitatibus reprehenderit autem natus quisquam quis dolor. Fugiat odit dolore quod aperiam non, doloremque odio consequuntur, laborum beatae, nam impedit.",
+        id: 1,
+      },
+      {
+        title: "top 5 css tips",
+        body: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Nam omnis, necessitatibus reprehenderit autem natus quisquam quis dolor. Fugiat odit dolore quod aperiam non, doloremque odio consequuntur, laborum beatae, nam impedit.",
+        id: 2,
+      },
+    ]);
 
+    //reactive
+    const ninjaTwo = reactive({ name: "luigi", age: 35 }); //we can't use primitive values with reactive
+
+    //computed
     const matchingNames = computed(() => {
       return firstNames.value.filter((firstName) =>
         firstName.toLowerCase().includes(search.value.toLowerCase())
@@ -88,7 +105,8 @@ export default {
       matchingNames,
       stopWatch,
       stopEffect,
-      handleStop
+      handleStop,
+      posts,
     };
   },
 };
